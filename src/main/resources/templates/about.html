@@ -83,6 +83,19 @@
         .nav-item:hover, .nav-item.active { background: rgba(255, 255, 255, 0.05); color: #fff; }
         .nav-item i { width: 18px; text-align: center; }
 
+        .submenu {
+            max-height: 0; overflow: hidden; transition: all 0.3s ease-in-out;
+            padding-left: 20px; display: flex; flex-direction: column; gap: 2px; opacity: 0;
+        }
+        .submenu.open { max-height: 400px; overflow-y: auto; margin-bottom: 10px; opacity: 1; }
+
+        .sub-nav-item {
+            padding: 8px 12px; border-radius: 8px; font-size: 13px; color: var(--text-secondary);
+            cursor: pointer; transition: 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .sub-nav-item:hover { background: rgba(255, 255, 255, 0.03); color: #fff; }
+
         /* MAIN CONTENT */
         .main-content {
             flex: 1;
@@ -213,15 +226,16 @@
 
         <!-- 1. NEW CHAT -->
         <div class="nav-group">
-            <a href="/" class="nav-item"><i class="fa-solid fa-plus"></i> New Chat</a>
+            <a href="/?action=new" class="nav-item"><i class="fa-solid fa-plus"></i> New Chat</a>
         </div>
 
         <div class="nav-sep"></div>
 
         <!-- 2. TOOLS & HISTORY -->
         <div class="nav-group">
-            <a href="/" class="nav-item"><i class="fa-solid fa-download"></i> Export Chat</a>
-            <a href="/" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+            <a href="/?action=export" class="nav-item"><i class="fa-solid fa-download"></i> Export Chat</a>
+            <div class="nav-item" id="historyBtn" onclick="toggleHistory()"><i class="fa-solid fa-clock-rotate-left"></i> History <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: auto; transition: 0.3s;" id="historyChevron"></i></div>
+            <div id="historySubmenu" class="submenu"></div>
         </div>
 
         <div class="nav-sep"></div>
@@ -312,5 +326,43 @@
         </div>
     </main>
 
+    <script>
+        async function toggleHistory() {
+            const submenu = document.getElementById('historySubmenu');
+            const chevron = document.getElementById('historyChevron');
+            const isOpening = !submenu.classList.contains('open');
+            if (isOpening) {
+                chevron.style.transform = 'rotate(180deg)';
+                await fetchHistory();
+                submenu.classList.add('open');
+            } else {
+                chevron.style.transform = 'rotate(0deg)';
+                submenu.classList.remove('open');
+            }
+        }
+
+        async function fetchHistory() {
+            const submenu = document.getElementById('historySubmenu');
+            submenu.innerHTML = '<div class="sub-nav-item">Loading...</div>';
+            try {
+                const response = await fetch('/api/history');
+                const sessions = await response.json();
+                submenu.innerHTML = ''; 
+                if (sessions.length === 0) {
+                    submenu.innerHTML = '<div class="sub-nav-item">No history yet</div>';
+                    return;
+                }
+                sessions.reverse().forEach(session => {
+                    const item = document.createElement('div');
+                    item.className = 'sub-nav-item';
+                    item.innerHTML = `<i class="fa-regular fa-message"></i> ${session.title}`;
+                    item.onclick = () => {
+                        window.location.href = `/?session=${session.id}`;
+                    };
+                    submenu.appendChild(item);
+                });
+            } catch (error) { submenu.innerHTML = `<div class="sub-nav-item" style="color:red">Error</div>`; }
+        }
+    </script>
 </body>
 </html>

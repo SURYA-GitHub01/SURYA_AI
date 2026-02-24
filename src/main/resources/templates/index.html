@@ -389,6 +389,21 @@
                 appendMessage('ai', 'Connection error.');
             }
         });
+
+        // Handle navigation actions from other pages
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const action = urlParams.get('action');
+            const session = urlParams.get('session');
+            
+            if (session) {
+                loadSession(session);
+            } else if (action === 'new') {
+                createNewChat();
+            } else if (action === 'history') {
+                toggleHistory();
+            }
+        });
     </script>
 </body>
 </html>
