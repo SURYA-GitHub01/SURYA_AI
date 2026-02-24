@@ -29,9 +29,9 @@ public class ChatService {
             system.put("role", "system");
             system.put("content",
                     "You are a professional assistant. " +
-                            "Always answer in short, clear numbered points. " +
-                            "Do not greet. Do not add unnecessary sentences. " +
-                            "Keep answers concise and structured.");
+                            "For simple greetings, thanks, or closings, provide a single, polite one-line response. " +
+                            "For complex questions or tasks, provide short, clear numbered points. " +
+                            "Keep all answers concise and structured.");
 
             JSONObject user = new JSONObject();
             user.put("role", "user");

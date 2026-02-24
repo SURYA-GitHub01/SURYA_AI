@@ -27,4 +27,10 @@ public class ChatController {
 
         return "index";
     }
+
+    @PostMapping("/api/ask")
+    @ResponseBody
+    public String askApi(@RequestParam String question) {
+        return chatService.askAI(question);
+    }
 }
