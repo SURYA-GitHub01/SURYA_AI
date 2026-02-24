@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>About | SURYA AI</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-sidebar: #020617;
+            --accent: #8b5cf6;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background-color: var(--bg-sidebar);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
+        .logo-area {
+            font-size: 16px;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        .logo-area span { font-weight: 300; opacity: 0.7; }
+        .logo-area b { font-weight: 800; letter-spacing: 3px; }
+
+        .logo-dot {
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+            position: relative;
+        }
+        .logo-dot::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            z-index: -1;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        .nav-group { margin-bottom: 10px; }
+        .nav-sep { height: 1px; background: rgba(255,255,255,0.12); margin: 20px 12px; }
+
+        .nav-item {
+            padding: 12px 16px; border-radius: 12px; font-size: 14px; color: var(--text-secondary);
+            display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.2s; margin-bottom: 4px;
+            text-decoration: none;
+        }
+        .nav-item:hover, .nav-item.active { background: rgba(255, 255, 255, 0.05); color: #fff; }
+        .nav-item i { width: 18px; text-align: center; }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .about-container {
+            width: 100%;
+            max-width: 1100px; /* Better width for details */
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .hero-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 60px;
+            border-radius: 32px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-section h2 { font-size: 42px; font-weight: 800; color: #fff; margin-bottom: 20px; letter-spacing: -1.5px; }
+        .hero-section p { font-size: 18px; color: #94a3b8; line-height: 1.6; max-width: 700px; }
+
+        .section-title { font-size: 14px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 32px;
+            border-radius: 24px;
+            transition: all 0.3s ease;
+        }
+        .info-card:hover { border-color: var(--accent); background: rgba(255, 255, 255, 0.05); transform: translateY(-5px); }
+        .info-card i { font-size: 24px; color: var(--accent); margin-bottom: 20px; }
+        .info-card h4 { font-size: 18px; color: #fff; margin-bottom: 12px; }
+        .info-card p { font-size: 15px; color: #94a3b8; line-height: 1.6; }
+
+        .tech-dna {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 60px;
+        }
+        .tech-chip {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* DEVELOPER PROFILE */
+        .dev-profile {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(37, 99, 235, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 50px;
+            border-radius: 32px;
+        }
+        .dev-photo-wrapper { position: relative; flex-shrink: 0; }
+        .dev-photo {
+            width: 180px; height: 180px;
+            border-radius: 50%; object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .dev-status {
+            position: absolute; bottom: 10px; right: 10px;
+            width: 30px; height: 30px;
+            background: #10b981; border: 4px solid var(--bg-dark);
+            border-radius: 50%;
+        }
+        .dev-details h4 { font-size: 32px; color: #fff; margin-bottom: 8px; font-weight: 800; }
+        .dev-details .role { font-size: 14px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        .dev-details .bio { font-size: 16px; color: #cbd5e1; line-height: 1.7; max-width: 500px; margin-bottom: 25px; }
+        
+        .social-row { display: flex; gap: 20px; }
+        .social-btn {
+            width: 44px; height: 44px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 18px; cursor: pointer; transition: 0.3s;
+        }
+        .social-btn:hover { background: var(--accent); transform: scale(1.1); }
+
+        .footer-note { text-align: center; margin-top: 80px; padding-bottom: 40px; color: rgba(255,255,255,0.2); font-size: 12px; letter-spacing: 1px; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <a href="/" class="logo-area">
+            <div class="logo-dot"></div>
+            <span>SURYA</span><b>AI</b>
+        </a>
+
+        <!-- 1. NEW CHAT -->
+        <div class="nav-group">
+            <a href="/" class="nav-item"><i class="fa-solid fa-plus"></i> New Chat</a>
+        </div>
+
+        <div class="nav-sep"></div>
+
+        <!-- 2. TOOLS & HISTORY -->
+        <div class="nav-group">
+            <a href="/" class="nav-item"><i class="fa-solid fa-download"></i> Export Chat</a>
+            <a href="/" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+        </div>
+
+        <div class="nav-sep"></div>
+
+        <!-- 3. DATA MANAGEMENT -->
+        <div class="nav-group">
+            <a href="/" class="nav-item" style="color: #ef4444;"><i class="fa-solid fa-trash-can"></i> Clear All History</a>
+        </div>
+
+        <div class="nav-sep"></div>
+
+        <!-- 4. ABOUT -->
+        <div class="nav-group" style="margin-top: auto;">
+            <a href="/about" class="nav-item active"><i class="fa-solid fa-circle-info"></i> System Insights</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="about-container">
+            
+            <section class="hero-section">
+                <h2>Redefining Human-AI Synergy.</h2>
+                <p>SURYA AI is a premium conversational platform that bridges the gap between complex artificial intelligence and intuitive, professional workflows.</p>
+            </section>
+
+            <div class="section-title">Core Capabilities</div>
+            <div class="grid-layout">
+                <div class="info-card">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <h4>Contextual Sessions</h4>
+                    <p>Advanced session management that preserves conversational context and organizes your thoughts logically.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h4>Ultra-Low Latency</h4>
+                    <p>Engineered with Java 17 multi-threading to ensure AI responses are delivered with maximum efficiency.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-shield-check"></i>
+                    <h4>Enterprise Stability</h4>
+                    <p>Built on the robust Spring Boot 3.x framework, providing a stable foundation for complex business tasks.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-file-export"></i>
+                    <h4>Secure Export</h4>
+                    <p>Full control over your data with instant conversation archiving and persistent history management.</p>
+                </div>
+            </div>
+
+            <div class="section-title">Technical DNA</div>
+            <div class="tech-dna">
+                <div class="tech-chip">Spring Boot 3.x</div>
+                <div class="tech-chip">Java 17 LTS</div>
+                <div class="tech-chip">OpenAI GPT-5 Nano</div>
+                <div class="tech-chip">Asynchronous REST API</div>
+                <div class="tech-chip">Modern CSS Grid/Flex</div>
+                <div class="tech-chip">Thymeleaf Engine</div>
+            </div>
+
+            <div class="section-title">Meet the Developer</div>
+            <section class="dev-profile">
+                <div class="dev-photo-wrapper">
+                    <img src="/developer.jpg" alt="Surya Sivakumar" class="dev-photo">
+                    <div class="dev-status"></div>
+                </div>
+                <div class="dev-details">
+                    <h4>Surya Sivakumar</h4>
+                    <div class="role">Java Backend Developer</div>
+                    <div class="bio">Passionate about building high-impact, enterprise-grade AI solutions. Surya specializes in full-stack Java ecosystems, focused on performance and seamless user experiences.</div>
+                    <div class="social-row">
+                        <div class="social-btn"><i class="fa-brands fa-linkedin-in"></i></div>
+                        <div class="social-btn"><i class="fa-brands fa-github"></i></div>
+                        <div class="social-btn"><i class="fa-solid fa-envelope"></i></div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="footer-note">
+                © 2026 SURYA AI ENTERPRISE • VERSION 2.4.0 • ALL RIGHTS RESERVED
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
