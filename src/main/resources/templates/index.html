@@ -130,14 +130,19 @@
         }
 
         .input-area button {
-            padding: 18px 32px;
+            padding: 18px;
             border-radius: 14px;
             border: none;
             background: linear-gradient(135deg, #2563eb, #1e40af);
             color: white;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .input-area button:hover {
@@ -181,7 +186,11 @@
 
     <form action="/ask" class="input-area" method="post">
         <input autocomplete="off" name="question" placeholder="Ask Surya AI..." required type="text"/>
-        <button type="submit">Send</button>
+        <button type="submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
     </form>
 
 </div>
