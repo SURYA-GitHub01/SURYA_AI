@@ -72,7 +72,7 @@
             100% { transform: scale(3); opacity: 0; }
         }
 
-        .nav-group { margin-bottom: 10px; }
+        .nav-group { margin-bottom: 0; }
         .nav-sep { height: 1px; background: rgba(255,255,255,0.12); margin: 20px 12px; }
 
         .nav-item {
@@ -86,17 +86,32 @@
         /* MAIN CONTENT */
         .main-content {
             flex: 1;
-            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%);
+            background-color: var(--bg-dark);
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            position: relative;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px 30px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .top-header .logo-area {
+            pointer-events: auto;
+            margin-bottom: 0;
         }
 
         .about-container {
+            flex: 1;
             width: 100%;
             max-width: 1100px; /* Better width for details */
             margin: 0 auto;
-            padding: 60px 40px;
+            padding: 20px 40px 60px;
+            overflow-y: auto;
         }
 
         .hero-section {
@@ -195,10 +210,6 @@
 <body>
 
     <aside class="sidebar">
-        <a href="/" class="logo-area">
-            <div class="logo-dot"></div>
-            <span>SURYA</span><b>AI</b>
-        </a>
 
         <!-- 1. NEW CHAT -->
         <div class="nav-group">
@@ -223,12 +234,18 @@
         <div class="nav-sep"></div>
 
         <!-- 4. ABOUT -->
-        <div class="nav-group" style="margin-top: auto;">
+        <div class="nav-group">
             <a href="/about" class="nav-item active"><i class="fa-solid fa-circle-info"></i> System Insights</a>
         </div>
     </aside>
 
     <main class="main-content">
+        <header class="top-header">
+            <a href="/about" class="logo-area">
+                <div class="logo-dot"></div>
+                <span>SURYA</span><b>AI</b>
+            </a>
+        </header>
         <div class="about-container">
             
             <section class="hero-section">

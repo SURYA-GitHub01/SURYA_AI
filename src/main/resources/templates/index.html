@@ -78,7 +78,7 @@
             100% { transform: scale(3); opacity: 0; }
         }
 
-        .nav-group { margin-bottom: 10px; }
+        .nav-group { margin-bottom: 0; }
         .nav-sep {
             height: 1px;
             background: rgba(255,255,255,0.12);
@@ -109,12 +109,25 @@
         /* MAIN CONTENT AREA */
         .main-content {
             flex: 1; position: relative;
-            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%);
+            background-color: var(--bg-dark);
             display: flex; flex-direction: column;
         }
 
+        .top-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px 30px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .top-header .logo-area {
+            pointer-events: auto;
+            margin-bottom: 0;
+        }
+
         #chatContainer { 
-            flex: 1; padding: 40px 10% 150px; 
+            flex: 1; padding: 20px 10% 150px; 
             overflow-y: auto; display: flex; flex-direction: column; gap: 24px; 
             scroll-behavior: smooth;
         }
@@ -171,10 +184,6 @@
 <body>
 
     <aside class="sidebar">
-        <a href="/" class="logo-area">
-            <div class="logo-dot"></div>
-            <span>SURYA</span><b>AI</b>
-        </a>
 
         <!-- 1. NEW CHAT -->
         <div class="nav-group">
@@ -206,12 +215,18 @@
     </aside>
 
     <main class="main-content">
+        <header class="top-header">
+            <a href="/about" class="logo-area">
+                <div class="logo-dot"></div>
+                <span>SURYA</span><b>AI</b>
+            </a>
+        </header>
         <div id="chatContainer">
             <div class="message ai">Hello. I am Surya AI. How can I assist you today?</div>
         </div>
         <div class="input-wrapper">
             <form class="input-box" id="chatForm">
-                <textarea id="userInput" rows="1" placeholder="Type your message..." required></textarea>
+                <textarea id="userInput" rows="1" placeholder="Ask anythink to Surya AI..." required></textarea>
                 <button type="submit" class="send-btn" id="sendBtn" disabled><i class="fa-solid fa-paper-plane"></i></button>
             </form>
         </div>
